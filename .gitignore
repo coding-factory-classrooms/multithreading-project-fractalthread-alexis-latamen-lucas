@@ -74,4 +74,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # stored pictures
-src/main/resources/static/img/Mandelbrot/
+src/main/resources/static/img/Mandelbrot/*.jpg
