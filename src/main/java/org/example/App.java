@@ -17,19 +17,18 @@ public class App {
     public static void main(String[] args) {
         initialize();
 
-        Spark.get("/", (req, res) -> {
-            return Template.render("home.html", new HashMap<>());
-        });
+        MandelbrotController mandelbrotController = new MandelbrotController();
+
+        Spark.get("/", mandelbrotController::home);
 
         Spark.get("/create-mandelbrot", (req, res) -> {
-            MandelbrotController mandelbrotController = new MandelbrotController();
-
             // mandelbrot jpg file creation
             for(int i = 0; i < 10; i++) {
                 mandelbrotController.createMandelbrot();
             }
             return "Temps moyen de création d'un mandelbrot : " + mandelbrotController.calculateAverage();
         });
+
     }
 
     static void initialize() {
