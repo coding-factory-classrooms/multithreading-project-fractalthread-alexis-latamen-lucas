@@ -1,0 +1,77 @@
+package org.example.utils;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+
+// 2018 TheFlyingKeyboard and released under MIT License
+// theflyingkeyboard.net
+public class Mandelbrot {
+    private final double reMin = -2.0d;
+    private final double reMax = 1.0d;
+    private final double imMin = -1.2d;
+    private final double imMax = 1.2d;
+    private int[] imagePixelData;
+    private int[] colors;
+    private int convergenceSteps;
+    private int width;
+    private int height;
+
+    public BufferedImage generate(int width, int height) {
+        this.width = width;
+        this.height = height;
+
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        imagePixelData = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
+
+        double precision = Math.max((reMax - reMin) / width, (imMax - imMin) / height);
+        convergenceSteps = (int) (1 / precision);
+
+        colors = new int[(int) (1 / precision)];
+
+        for (int i = 0; i < 1 / precision - 1; ++i) {
+            colors[i] = Color.HSBtoRGB(0.7f, 1, i / (i + 50f));
+        }
+
+        double counter = 0;
+        int convergenceValue;
+
+        for (double mandelbrotReal = reMin, x = 0; x < width; mandelbrotReal += precision, ++x) {
+            for (double mandelbrotImaginary = imMin, y = 0; y < height; mandelbrotImaginary += precision, ++y) {
+                convergenceValue = calculateConvergence(mandelbrotReal, mandelbrotImaginary, convergenceSteps);
+                colorPixel(x, y, convergenceValue);
+
+                ++counter;
+            }
+
+            //System.out.println((counter / (width * height)) * 100.0f + "%");
+        }
+
+        return bufferedImage;
+    }
+
+    private void colorPixel(double x, double y, int convergence) {
+        if (convergence < convergenceSteps) {
+            imagePixelData[(int) y * width + (int) x] = colors[convergence];
+        } else {
+            imagePixelData[(int) y * width + (int) x] = 0;
+        }
+    }
+
+    private int calculateConvergence(double mandelbrotReal, double mandelbrotImaginary, int maxSteps) {
+        double x = 0;
+        double y = 0;
+        int step = 0;
+        double newX;
+
+        while (x * x + y * y < 4 && step < maxSteps) {
+            newX = x * x - y * y + mandelbrotReal;
+            y = 2 * x * y + mandelbrotImaginary;
+            x = newX;
+
+            ++step;
+        }
+
+        return step;
+    }
+}
