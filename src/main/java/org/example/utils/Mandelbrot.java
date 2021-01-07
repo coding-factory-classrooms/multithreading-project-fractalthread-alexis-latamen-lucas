@@ -25,7 +25,9 @@ public class Mandelbrot {
         imagePixelData = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
 
         double precision = Math.max((reMax - reMin) / width, (imMax - imMin) / height);
+        //System.out.println("precision : " + precision);
         convergenceSteps = (int) (1 / precision);
+        //System.out.println("convergence steps : " + convergenceSteps);
 
         colors = new int[(int) (1 / precision)];
 
@@ -38,7 +40,7 @@ public class Mandelbrot {
 
         for (double mandelbrotReal = reMin, x = 0; x < width; mandelbrotReal += precision, ++x) {
             for (double mandelbrotImaginary = imMin, y = 0; y < height; mandelbrotImaginary += precision, ++y) {
-                convergenceValue = calculateConvergence(mandelbrotReal, mandelbrotImaginary, convergenceSteps);
+                convergenceValue = calculateConvergence(mandelbrotReal, mandelbrotImaginary, 5000);
                 colorPixel(x, y, convergenceValue);
 
                 ++counter;

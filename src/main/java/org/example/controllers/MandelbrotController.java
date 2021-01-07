@@ -19,11 +19,12 @@ public class MandelbrotController {
         try {
             long start = System.currentTimeMillis();
             ImageIO.write(
-                    mandelbrot.generate(1200, 900),
-                    "png",
+                    mandelbrot.generate(1000, 1000),
+                    "jpg",
                     new File("src/main/resources/static/img/Mandelbrot/mandelbrot-"+dateFormat.format(date)+".jpg")
             );
             long elapsed = System.currentTimeMillis() - start;
+            System.out.println("Temps : " + elapsed);
             this.delays.add(elapsed);
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +37,8 @@ public class MandelbrotController {
             for (long delay : delays) {
                 sum += delay;
             }
+            return sum / delays.size();
         }
-        return sum / delays.size();
+        return sum;
     }
 }
