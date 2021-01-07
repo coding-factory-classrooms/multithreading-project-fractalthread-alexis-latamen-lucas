@@ -1,9 +1,16 @@
 package org.example.controllers;
 
+import org.apache.velocity.texen.util.FileUtil;
 import org.example.utils.Mandelbrot;
+import spark.Request;
+import spark.Response;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,16 +19,17 @@ import java.util.List;
 public class MandelbrotController {
     List<Long> delays = new ArrayList<Long>();
 
-    public void createMandelbrot(){
+    public String createMandelbrot(){
         Mandelbrot mandelbrot = new Mandelbrot();
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss-S") ;
+        String fileName = "src/main/resources/static/img/Mandelbrot/mandelbrot-"+dateFormat.format(date)+".jpg";
         try {
             long start = System.currentTimeMillis();
             ImageIO.write(
-                    mandelbrot.generate(1000, 1000),
+                    mandelbrot.generate(1200, 900),
                     "jpg",
-                    new File("src/main/resources/static/img/Mandelbrot/mandelbrot-"+dateFormat.format(date)+".jpg")
+                    new File(fileName)
             );
             long elapsed = System.currentTimeMillis() - start;
             System.out.println("Temps : " + elapsed);
@@ -29,6 +37,7 @@ public class MandelbrotController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return fileName;
     }
 
     public long calculateAverage() {
@@ -40,5 +49,18 @@ public class MandelbrotController {
             return sum / delays.size();
         }
         return sum;
+    }
+
+    public byte[] home (Request request, Response response) {
+        String pathToFile = createMandelbrot();
+
+        File file = new File(pathToFile);
+        response.type("image/jpg");
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
