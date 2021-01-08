@@ -1,7 +1,35 @@
 #parse("base.html")
 #@mainLayout()
-<h1>Home Template</h1>
-<div>
-    <img src="img/java.jpg" />
-</div>
+
+<main class="main">
+    <header class="header">
+        <div class="header__content">
+            <h1 class="header__title">Fract'App</h1>
+            <h2 class="header__subtitle">Vivez une expérience hors du commun !</h2>
+        </div>
+
+        <a class="next" href="#content">
+            <p class="next__text">Découvrir</p>
+            <div class="next__img-box">
+                <img class="next__img" src="./img/next.svg" alt="next">
+            </div>
+        </a>
+    </header>
+    <div class="content" id="content">
+        <div class="container">
+            <div class="box-image">
+                <img class="box-image__img" src="./img/mandelbrot-base.jpg" alt="mandelbrot">
+
+                <button type="button" class="btn btn-zoom in" id="zoomIn">
+                    <p class="zoom__text">+</p>
+                </button>
+
+                <button type="button" class="btn btn-zoom out" id="zoomOut">
+                    <p class="zoom__text">-</p>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
 #end

@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
 
     <link rel="stylesheet" href="/css/style.css">
-    <title>Default title</title>
+    <title>Fract'App</title>
 </head>
 
 
@@ -13,6 +13,27 @@
 <div id="content">
     $bodyContent
 </div>
+
+    <script>
+        document.querySelector("#zoomIn").addEventListener("click", function() {
+            fetchApiIn()
+        })
+
+        document.querySelector("#zoomOut").addEventListener("click", function() {
+            fetchApiOut()
+        })
+
+        async function fetchApiIn() {
+            return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1")
+                .then((res) => res.json())
+                .then(data => console.log(data))
+        }
+        async function fetchApiOut() {
+            return await fetch("http://localhost:8080/api/mandelbrot/out?zoom=0.2")
+                .then((res) => res.json())
+                .then(data => console.log(data))
+        }
+    </script>
 
 </body>
 

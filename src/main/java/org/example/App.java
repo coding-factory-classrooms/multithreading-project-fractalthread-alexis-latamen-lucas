@@ -1,25 +1,25 @@
 package org.example;
 
+import org.example.controllers.api.ZoomController;
+import org.example.controllers.front.HomeController;
 import org.example.controllers.MandelbrotController;
 import org.example.core.Conf;
 import org.example.core.Template;
 import org.example.middlewares.LoggerMiddleware;
-import org.example.utils.Mandelbrot;
 import spark.Spark;
-
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 
 public class App {
     public static void main(String[] args) {
         initialize();
 
+        HomeController homeController = new HomeController();
+        ZoomController zoomController = new ZoomController();
         MandelbrotController mandelbrotController = new MandelbrotController();
 
-        Spark.get("/", mandelbrotController::home);
+        Spark.get("/", homeController::list);
+        Spark.get("/api/mandelbrot/in", zoomController::in);
+        Spark.get("/api/mandelbrot/out", zoomController::out);
+        Spark.get("/mandelbrot", mandelbrotController::home);
 
         Spark.get("/create-mandelbrot", (req, res) -> {
             // mandelbrot jpg file creation
