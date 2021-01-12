@@ -1,13 +1,11 @@
 package org.example.controllers;
 
-import org.apache.velocity.texen.util.FileUtil;
 import org.example.utils.Mandelbrot;
 import spark.Request;
 import spark.Response;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,10 +22,11 @@ public class MandelbrotController {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss-S") ;
         String fileName = "src/main/resources/static/img/Mandelbrot/mandelbrot-"+dateFormat.format(date)+".jpg";
+        BufferedImage img = mandelbrot.create(1000, 1000);
         try {
             long start = System.currentTimeMillis();
             ImageIO.write(
-                    mandelbrot.generate(1200, 900),
+                    mandelbrot.generate(img),
                     "jpg",
                     new File(fileName)
             );

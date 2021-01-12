@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
 
     <link rel="stylesheet" href="/css/style.css">
-    <title>Default title</title>
+    <title>Fract'App</title>
 </head>
 
 
@@ -13,6 +13,42 @@
 <div id="content">
     $bodyContent
 </div>
+
+    <script type="text/javascript">
+        document.querySelector("#zoomIn").addEventListener("click", function() {
+            fetchApiIn()
+        })
+
+        document.querySelector("#zoomOut").addEventListener("click", function() {
+            fetchApiOut()
+        })
+
+        async function fetchApiIn() {
+            img = document.getElementById("mandelbrot-image");
+            return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1&filename="+img.dataset.filename)
+                .then((res) => res.json())
+                .then(function(data) {
+                    changeImg(data)
+                })
+        }
+        async function fetchApiOut() {
+            img = document.getElementById("mandelbrot-image");
+            return await fetch("http://localhost:8080/api/mandelbrot/out?zoom=0.2&filename="+img.dataset.filename)
+                .then((res) => res.json())
+                .then(function(data) {
+                    changeImg(data)
+                })
+        }
+
+        function changeImg(data){
+               filename = data.filename;
+                    img = document.getElementById("mandelbrot-image");
+                    img.dataset.filename = filename;
+                    let basepath = "./img/";
+                    let foldername = "Mandelbrot/"
+                    img.src = basepath+foldername+filename;
+        }
+    </script>
 
 </body>
 
