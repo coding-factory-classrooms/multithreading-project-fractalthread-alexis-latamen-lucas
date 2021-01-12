@@ -15,39 +15,101 @@
 </div>
 
     <script type="text/javascript">
-        document.querySelector("#zoomIn").addEventListener("click", function() {
-            fetchApiIn()
-        })
 
-        document.querySelector("#zoomOut").addEventListener("click", function() {
-            fetchApiOut()
-        })
-
-        async function fetchApiIn() {
-            img = document.getElementById("mandelbrot-image");
-            return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1&filename="+img.dataset.filename)
+        // Functions
+        async function fetchApiIn(x, y) {
+        const imageName = document.getElementById("fractalCanvas").dataset.filename;
+            return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1&xPos="+ x + "&yPos="+ y +"&filename="+imageName)
                 .then((res) => res.json())
                 .then(function(data) {
-                    changeImg(data)
-                })
-        }
-        async function fetchApiOut() {
-            img = document.getElementById("mandelbrot-image");
-            return await fetch("http://localhost:8080/api/mandelbrot/out?zoom=0.2&filename="+img.dataset.filename)
-                .then((res) => res.json())
-                .then(function(data) {
-                    changeImg(data)
+                    createImage("img/Mandelbrot/"+data.filename)
                 })
         }
 
-        function changeImg(data){
-               filename = data.filename;
-                    img = document.getElementById("mandelbrot-image");
-                    img.dataset.filename = filename;
-                    let basepath = "./img/";
-                    let foldername = "Mandelbrot/"
-                    img.src = basepath+foldername+filename;
+        async function fetchApiOut(x, y) {
+            const imageName = document.getElementById("fractalCanvas").dataset.filename;
+            return await fetch("http://localhost:8080/api/mandelbrot/out?zoom=0.2&xPos="+ x + "&yPos="+ y +"&filename="+imageName)
+                .then((res) => res.json())
+                .then(function(data) {
+                    createImage("img/Mandelbrot/"+data.filename)
+                })
         }
+
+        async function fetchMove(direction) {
+            return await fetch("http://localhost:8080/api/mandelbrot/pan?direction="+direction)
+                .then((res) => res.json())
+                .then(function(data) {
+                    console.log(data.direction)
+                })
+        }
+
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+
+        function createImage(filename = "img/mandelbrot-base.jpg") {
+            base_image = new Image();
+            base_image.src = filename;
+            base_image.onload = function(){
+              ctx.drawImage(base_image, 0, 0);
+            }
+        }
+        // End Functions
+
+        const canvas = document.getElementById("fractalCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.dataset.filename = "mandelbrot-base.jpg";
+        ctx.fillStyle = "rgba(255,255,255,1)";
+        ctx.fillRect(0, 0, canvas.getAttribute("height"), canvas.getAttribute("width"));
+
+        canvas.oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
+
+        canvas.addEventListener("mousedown", function (evt) {
+            var mousePos = getMousePos(canvas, evt);
+
+            switch(event.which) {
+                case 1:
+                  fetchApiIn(mousePos.x, mousePos.y)
+                  break;
+                case 2:
+                  break;
+                case 3:
+                  fetchApiOut(mousePos.x, mousePos.y)
+                  break;
+                default:
+                    console.log("ta souris est chelou")
+            }
+        }, false);
+
+        document.onkeydown = function (e) {
+            e = e || window.event;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            let direction = "test";
+
+            if (e.keyCode == '38') {
+                direction = "up"
+            }
+            else if (e.keyCode == '40') {
+                direction = "down"
+            }
+            else if (e.keyCode == '37') {
+               direction = "left"
+            }
+            else if (e.keyCode == '39') {
+               direction = "right"
+            }
+
+            fetchMove(direction);
+        }
+
+        createImage();
     </script>
 
 </body>
