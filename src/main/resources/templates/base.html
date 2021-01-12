@@ -35,6 +35,14 @@
                 })
         }
 
+        async function fetchMove(direction) {
+            return await fetch("http://localhost:8080/api/mandelbrot/pan?direction="+direction)
+                .then((res) => res.json())
+                .then(function(data) {
+                    console.log(data.direction)
+                })
+        }
+
         function getMousePos(canvas, evt) {
             var rect = canvas.getBoundingClientRect();
             return {
@@ -76,6 +84,30 @@
                     console.log("ta souris est chelou")
             }
         }, false);
+
+        document.onkeydown = function (e) {
+            e = e || window.event;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            let direction = "test";
+
+            if (e.keyCode == '38') {
+                direction = "up"
+            }
+            else if (e.keyCode == '40') {
+                direction = "down"
+            }
+            else if (e.keyCode == '37') {
+               direction = "left"
+            }
+            else if (e.keyCode == '39') {
+               direction = "right"
+            }
+
+            fetchMove(direction);
+        }
 
         createImage();
     </script>
