@@ -8,11 +8,11 @@ import java.awt.image.DataBufferInt;
 // theflyingkeyboard.net
 public class Mandelbrot {
     /* Real sets (between -1 and 0.5) */
-    private double reMin = -1.5d; // - haut droite
-    private double reMax = 1.5d;
+    private double reMin = -2.0d;
+    private double reMax = 1.0d;
 
     /* Imaginary sets (between -0.5 and 0.5) */
-    private double imMin = -1.2d; // - descend + monte
+    private double imMin = -1.2d;
     private double imMax = 1.2d;
 
     private int[] imagePixelData;
@@ -130,12 +130,12 @@ public class Mandelbrot {
     }
 
     public void panRight() {
-        this.reMin = this.reMin + 0.5;
-        this.reMax = this.reMax + 0.5;
+        this.reMin = this.reMin - 0.5;
+        this.reMax = this.reMax - 0.5;
     }
 
     public void panLeft() {
-        this.reMin = this.reMin - 0.5;
-        this.reMax = this.reMax - 0.5;
+        this.reMin = this.reMin + 0.5;
+        this.reMax = this.reMax + 0.5;
     }
 }
