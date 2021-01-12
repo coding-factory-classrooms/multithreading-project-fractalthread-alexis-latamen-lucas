@@ -17,20 +17,7 @@
     </header>
     <div class="content" id="content">
         <div class="container">
-            <div class="box-image">
-                <img id="mandelbrot-image"
-                     class="box-image__img" src="./img/mandelbrot-base.jpg"
-                     data-filename="mandelbrot-base.jpg"
-                     alt="mandelbrot">
-
-                <button type="button" class="btn btn-zoom in" id="zoomIn">
-                    <p class="zoom__text">+</p>
-                </button>
-
-                <button type="button" class="btn btn-zoom out" id="zoomOut">
-                    <p class="zoom__text">-</p>
-                </button>
-            </div>
+            <canvas id="fractalCanvas" height="800" width="800" style="margin: 0 auto; cursor: crosshair;"></canvas>
         </div>
     </div>
 </main>

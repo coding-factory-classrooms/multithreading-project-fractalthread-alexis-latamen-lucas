@@ -119,7 +119,6 @@ public class ZoomController {
 
         return "{\"type\": \"in\", \"value\":"+ result + ", \"filename\": \""  + fileName + "\" }";
     }
-
 }
 
 
