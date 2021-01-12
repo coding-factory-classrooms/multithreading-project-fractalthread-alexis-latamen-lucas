@@ -36,10 +36,11 @@
         }
 
         async function fetchMove(direction) {
-            return await fetch("http://localhost:8080/api/mandelbrot/pan?direction="+direction)
+        const imageName = document.getElementById("fractalCanvas").dataset.filename;
+            return await fetch("http://localhost:8080/api/mandelbrot/pan?direction=" + direction + "&filename=" + imageName)
                 .then((res) => res.json())
                 .then(function(data) {
-                    console.log(data.direction)
+                    createImage("img/Mandelbrot/"+data.filename);
                 })
         }
 
@@ -91,7 +92,7 @@
             e.preventDefault();
             e.stopPropagation();
 
-            let direction = "test";
+            let direction = "";
 
             if (e.keyCode == '38') {
                 direction = "up"
@@ -106,7 +107,9 @@
                direction = "right"
             }
 
-            fetchMove(direction);
+            if(direction != "") {
+                fetchMove(direction);
+            }
         }
 
         createImage();

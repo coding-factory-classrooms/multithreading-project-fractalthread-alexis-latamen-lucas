@@ -120,4 +120,24 @@ public class Mandelbrot {
         this.reMin = this.reMin - zoom;
         this.reMax = this.reMax + zoom;
     }
+
+    public void panTop() {
+        this.imMin = this.imMin + 0.2;
+        this.imMax = this.imMax + 0.2;
+    }
+
+    public void panBot() {
+        this.imMin = this.imMin - 0.2;
+        this.imMax = this.imMax - 0.2;
+    }
+
+    public void panRight() {
+        this.reMin = this.reMin - 0.2;
+        this.reMax = this.reMax - 0.2;
+    }
+
+    public void panLeft() {
+        this.reMin = this.reMin + 0.2;
+        this.reMax = this.reMax + 0.2;
+    }
 }
