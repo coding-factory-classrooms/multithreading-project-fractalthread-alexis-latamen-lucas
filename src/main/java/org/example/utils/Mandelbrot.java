@@ -123,10 +123,12 @@ public class Mandelbrot {
 
     public void panTop() {
         this.imMin = this.imMin + 0.5;
+        this.imMax = this.imMax + 0.5;
     }
 
     public void panBot() {
         this.imMin = this.imMin - 0.5;
+        this.imMax = this.imMax - 0.5;
     }
 
     public void panRight() {

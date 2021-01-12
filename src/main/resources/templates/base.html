@@ -40,8 +40,8 @@
             return await fetch("http://localhost:8080/api/mandelbrot/pan?direction=" + direction + "&filename=" + imageName)
                 .then((res) => res.json())
                 .then(function(data) {
-                    createImage("img/Mandelbrot/"+data.filename)
-                    console.log(data.direction, data.filename)
+                    createImage("img/Mandelbrot/"+data.filename);
+                    console.log(data);
                 })
         }
 

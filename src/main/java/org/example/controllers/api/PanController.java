@@ -91,7 +91,7 @@ public class PanController {
 
         System.out.println("HELLO : " + fileName + " DIRECTION : " + direction);
         //return "{\"type\": \"in\", \"value\":"+ result + ", \"filename\": \""  + fileName + "\" }";
-        return "{\"direction\": \""  + direction + ", \"filename\": \"" + fileName + "\" }";
+        return "{\"direction\": \""  + direction + "\", \"filename\": \"" + fileName + "\" }";
     }
 }
 
