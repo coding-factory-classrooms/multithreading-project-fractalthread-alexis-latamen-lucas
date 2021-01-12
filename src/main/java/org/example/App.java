@@ -21,7 +21,7 @@ public class App {
         Spark.get("/", homeController::list);
         Spark.get("/api/mandelbrot/in", zoomController::in);
         Spark.get("/api/mandelbrot/out", zoomController::out);
-        Spark.get("/api/mandelbrot/pan", panController::move);
+        Spark.get("/api/mandelbrot/pan", zoomController::move);
         Spark.get("/mandelbrot", mandelbrotController::home);
 
         Spark.get("/create-mandelbrot", (req, res) -> {
