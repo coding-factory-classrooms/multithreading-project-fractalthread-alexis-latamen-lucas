@@ -7,27 +7,33 @@ import java.awt.image.DataBufferInt;
 // 2018 TheFlyingKeyboard and released under MIT License
 // theflyingkeyboard.net
 public class Mandelbrot {
-    private final double reMin = -2.0d;
-    private final double reMax = 1.0d;
-    private final double imMin = -1.2d;
-    private final double imMax = 1.2d;
+    /* Real sets (between -1 and 0.5) */
+    private double reMin = -2.0d;
+    private double reMax = 1.0d;
+
+    /* Imaginary sets (between -0.5 and 0.5) */
+    private double imMin = -1.2d;
+    private double imMax = 1.2d;
+
     private int[] imagePixelData;
     private int[] colors;
     private int convergenceSteps;
     private int width;
     private int height;
 
-    public BufferedImage generate(int width, int height) {
+    public BufferedImage create(int width, int height) {
         this.width = width;
         this.height = height;
 
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         imagePixelData = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
+        return bufferedImage;
+    }
+
+    public BufferedImage generate(BufferedImage bufferedImage) {
 
         double precision = Math.max((reMax - reMin) / width, (imMax - imMin) / height);
-        //System.out.println("precision : " + precision);
         convergenceSteps = (int) (1 / precision);
-        //System.out.println("convergence steps : " + convergenceSteps);
 
         colors = new int[(int) (1 / precision)];
 
@@ -75,5 +81,43 @@ public class Mandelbrot {
         }
 
         return step;
+    }
+
+    public double getReMin() {
+        return reMin;
+    }
+
+    public double getReMax() {
+        return reMax;
+    }
+
+    public double getImMin() {
+        return imMin;
+    }
+
+    public double getImMax() {
+        return imMax;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void zoomIn(float zoom) {
+        this.imMin = this.imMin + zoom;
+        this.imMax = this.imMax - zoom;
+        this.reMin = this.reMin + zoom;
+        this.reMax = this.reMax - zoom;
+    }
+
+    public void zoomOut(float zoom) {
+        this.imMin = this.imMin - zoom;
+        this.imMax = this.imMax + zoom;
+        this.reMin = this.reMin - zoom;
+        this.reMax = this.reMax + zoom;
     }
 }

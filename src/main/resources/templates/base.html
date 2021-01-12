@@ -14,7 +14,7 @@
     $bodyContent
 </div>
 
-    <script>
+    <script type="text/javascript">
         document.querySelector("#zoomIn").addEventListener("click", function() {
             fetchApiIn()
         })
@@ -24,14 +24,29 @@
         })
 
         async function fetchApiIn() {
-            return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1")
+            img = document.getElementById("mandelbrot-image");
+            return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1&filename="+img.dataset.filename)
                 .then((res) => res.json())
-                .then(data => console.log(data))
+                .then(function(data) {
+                    changeImg(data)
+                })
         }
         async function fetchApiOut() {
-            return await fetch("http://localhost:8080/api/mandelbrot/out?zoom=0.2")
+            img = document.getElementById("mandelbrot-image");
+            return await fetch("http://localhost:8080/api/mandelbrot/out?zoom=0.2&filename="+img.dataset.filename)
                 .then((res) => res.json())
-                .then(data => console.log(data))
+                .then(function(data) {
+                    changeImg(data)
+                })
+        }
+
+        function changeImg(data){
+               filename = data.filename;
+                    img = document.getElementById("mandelbrot-image");
+                    img.dataset.filename = filename;
+                    let basepath = "./img/";
+                    let foldername = "Mandelbrot/"
+                    img.src = basepath+foldername+filename;
         }
     </script>
 
