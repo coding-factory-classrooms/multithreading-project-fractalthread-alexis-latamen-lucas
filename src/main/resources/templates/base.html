@@ -93,7 +93,7 @@
             e.preventDefault();
             e.stopPropagation();
 
-            let direction = "test";
+            let direction = "";
 
             if (e.keyCode == '38') {
                 direction = "up"
@@ -108,7 +108,9 @@
                direction = "right"
             }
 
-            fetchMove(direction);
+            if(direction != "") {
+                fetchMove(direction);
+            }
         }
 
         createImage();
