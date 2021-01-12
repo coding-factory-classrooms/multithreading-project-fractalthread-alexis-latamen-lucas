@@ -122,22 +122,22 @@ public class Mandelbrot {
     }
 
     public void panTop() {
-        this.imMin = this.imMin + 0.5;
-        this.imMax = this.imMax + 0.5;
+        this.imMin = this.imMin + 0.2;
+        this.imMax = this.imMax + 0.2;
     }
 
     public void panBot() {
-        this.imMin = this.imMin - 0.5;
-        this.imMax = this.imMax - 0.5;
+        this.imMin = this.imMin - 0.2;
+        this.imMax = this.imMax - 0.2;
     }
 
     public void panRight() {
-        this.reMin = this.reMin - 0.5;
-        this.reMax = this.reMax - 0.5;
+        this.reMin = this.reMin - 0.2;
+        this.reMax = this.reMax - 0.2;
     }
 
     public void panLeft() {
-        this.reMin = this.reMin + 0.5;
-        this.reMax = this.reMax + 0.5;
+        this.reMin = this.reMin + 0.2;
+        this.reMax = this.reMax + 0.2;
     }
 }

@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.controllers.api.PanController;
 import org.example.controllers.api.ZoomController;
 import org.example.controllers.front.HomeController;
 import org.example.controllers.MandelbrotController;
@@ -16,7 +15,6 @@ public class App {
         HomeController homeController = new HomeController();
         ZoomController zoomController = new ZoomController();
         MandelbrotController mandelbrotController = new MandelbrotController();
-        PanController panController = new PanController();
 
         Spark.get("/", homeController::list);
         Spark.get("/api/mandelbrot/in", zoomController::in);
