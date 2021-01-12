@@ -198,6 +198,10 @@ public class ZoomController {
         //return "{\"type\": \"in\", \"value\":"+ result + ", \"filename\": \""  + fileName + "\" }";
         return "{\"direction\": \""  + direction + "\", \"filename\": \"" + fileName + "\" }";
     }
+
+    public void clearMandelbrotList() {
+        this.mandelbrotList.clear();
+    }
 }
 
 
