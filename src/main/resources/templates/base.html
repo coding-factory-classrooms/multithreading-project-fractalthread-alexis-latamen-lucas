@@ -28,9 +28,11 @@
 
         async function fetchResize() {
             const imageName = document.getElementById("fractalCanvas").dataset.filename;
-            return await fetch("http://localhost:8080/api/mandelbrot/resize?width=1000&height=1000&filename="+imageName)
+            return await fetch("http://localhost:8080/api/mandelbrot/resize?width=400&height=400&filename="+imageName)
                 .then((res) => res.json())
                 .then(function(data) {
+                    canvas.width = 400
+                    canvas.height = 400
                     createImage("img/Mandelbrot/"+data.filename)
                 })
         }
