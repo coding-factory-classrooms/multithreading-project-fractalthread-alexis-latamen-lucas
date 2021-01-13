@@ -199,6 +199,58 @@ public class ZoomController {
         return "{\"direction\": \""  + direction + "\", \"filename\": \"" + fileName + "\" }";
     }
 
+    public final String resize (Request req, Response res) {
+        String direction = req.queryParamOrDefault("direction", "right");
+
+        Integer width = Integer.valueOf(req.queryParamOrDefault("width", "100"));
+        Integer height = Integer.valueOf(req.queryParamOrDefault("height", "100"));
+
+        String filename = req.queryParams("filename");
+        res.type("application/json");
+
+        String basepath = "src/main/resources/static/img/";
+        String folderName = "Mandelbrot/";
+        String fileName = null;
+
+        BufferedImage img = null;
+
+        try {
+            BufferedImage img3;
+            Mandelbrot mandelbrot;
+            // if we created pictures yet
+            if(!mandelbrotList.isEmpty()) {
+                mandelbrot = mandelbrotList.get(mandelbrotList.size() - 1);
+                BufferedImage img1 = mandelbrot.create(width, height);
+
+                img3 = mandelbrot.generate(img1);
+            } else {
+                // first time
+                img = ImageIO.read(new File(basepath+folderName+filename));
+                mandelbrot = new Mandelbrot();
+                BufferedImage img2 = mandelbrot.create(width, height);
+
+                img3 = mandelbrot.generate(img2);
+            }
+
+            mandelbrotList.add(mandelbrot);
+
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd-HHmmss-S") ;
+            fileName = "mandelbrot-"+dateFormat.format(date)+".jpg";
+
+            ImageIO.write(
+                    img3,
+                    "jpg",
+                    new File(basepath+folderName+fileName)
+            );
+            System.out.println(fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "{\"filename\": \"" + fileName + "\" }";
+    }
+
     public void clearMandelbrotList() {
         this.mandelbrotList.clear();
     }
