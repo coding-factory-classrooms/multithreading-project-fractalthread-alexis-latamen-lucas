@@ -18,10 +18,21 @@
 
         // Functions
         async function fetchApiIn(x, y) {
-        const imageName = document.getElementById("fractalCanvas").dataset.filename;
+            const imageName = document.getElementById("fractalCanvas").dataset.filename;
             return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1&xPos="+ x + "&yPos="+ y +"&filename="+imageName)
                 .then((res) => res.json())
                 .then(function(data) {
+                    createImage("img/Mandelbrot/"+data.filename)
+                })
+        }
+
+        async function fetchResize() {
+            const imageName = document.getElementById("fractalCanvas").dataset.filename;
+            return await fetch("http://localhost:8080/api/mandelbrot/resize?width=400&height=400&filename="+imageName)
+                .then((res) => res.json())
+                .then(function(data) {
+                    canvas.width = 400
+                    canvas.height = 400
                     createImage("img/Mandelbrot/"+data.filename)
                 })
         }
@@ -68,6 +79,10 @@
         ctx.fillRect(0, 0, canvas.getAttribute("height"), canvas.getAttribute("width"));
 
         canvas.oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
+
+        document.querySelector(".resize-fractal").addEventListener("click", function(e) {
+            fetchResize()
+        })
 
         canvas.addEventListener("mousedown", function (evt) {
             var mousePos = getMousePos(canvas, evt);
