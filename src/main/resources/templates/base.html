@@ -19,7 +19,7 @@
         // Functions
         async function fetchApiIn(x, y) {
             const imageName = document.getElementById("fractalCanvas").dataset.filename;
-            return await fetch("http://localhost:8080/api/mandelbrot/in?zoom=0.1&xPos="+ x + "&yPos="+ y +"&filename="+imageName)
+            return await fetch("http://localhost:8080/api/mandelbrot/zoom?zoom=0.1&xPos="+ x + "&yPos="+ y +"&filename="+imageName+"&type=in")
                 .then((res) => res.json())
                 .then(function(data) {
                     createImage("img/Mandelbrot/"+data.filename)
@@ -39,7 +39,7 @@
 
         async function fetchApiOut(x, y) {
             const imageName = document.getElementById("fractalCanvas").dataset.filename;
-            return await fetch("http://localhost:8080/api/mandelbrot/out?zoom=0.2&xPos="+ x + "&yPos="+ y +"&filename="+imageName)
+            return await fetch("http://localhost:8080/api/mandelbrot/zoom?zoom=0.2&xPos="+ x + "&yPos="+ y +"&filename="+imageName+"&type=out")
                 .then((res) => res.json())
                 .then(function(data) {
                     createImage("img/Mandelbrot/"+data.filename)
