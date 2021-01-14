@@ -51,7 +51,7 @@ public class Mandelbrot {
         double counter = 0;
         int convergenceValue;
 
-        ExecutorService threadPool = Executors.newFixedThreadPool(16);
+        ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         List<Future<BufferedImage>> futures = new ArrayList<>();
 
