@@ -40,48 +40,60 @@ public class Mandelbrot {
     public BufferedImage generate(BufferedImage bufferedImage) throws ExecutionException, InterruptedException {
 
         double precision = Math.max((reMax - reMin) / width, (imMax - imMin) / height);
-        convergenceSteps = (int) (1 / precision);
+        /* TODO : not to do here ! Will be instantiated for every fractal..
+        * TODO : LRU Cache implemented but not activated
+         */
+        LRUCache cache = new LRUCache();
 
-        colors = new int[(int) (1 / precision)];
+        BufferedImage fractal = cache.get((float) precision);
+        if(fractal != null) {
+            bufferedImage = fractal;
+        } else {
+            convergenceSteps = (int) (1 / precision);
 
-        for (int i = 0; i < 1 / precision - 1; ++i) {
-            colors[i] = Color.HSBtoRGB(0.7f, 1, i / (i + 50f));
-        }
+            colors = new int[(int) (1 / precision)];
 
-        double counter = 0;
-        int convergenceValue;
+            for (int i = 0; i < 1 / precision - 1; ++i) {
+                colors[i] = Color.HSBtoRGB(0.7f, 1, i / (i + 50f));
+            }
 
-        ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+            double counter = 0;
+            int convergenceValue;
 
-        List<Future<BufferedImage>> futures = new ArrayList<>();
+            ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        for (double mandelbrotReal = reMin, x = 0; x < width; mandelbrotReal += precision, ++x) {
-            //System.out.println("mandelbrotReal : " + mandelbrotReal);
-            ImageTask imageTask = new ImageTask(
-                    bufferedImage,
-                    imagePixelData,
-                    colors,
-                    convergenceSteps,
-                    width,
-                    height,
-                    imMin,
-                    mandelbrotReal,
-                    precision,
-                    x
-            );
+            List<Future<BufferedImage>> futures = new ArrayList<>();
 
-           // List<Future<ImageTask>> futures = new ArrayList<>();
-            Future<BufferedImage> future = threadPool.submit(imageTask);
-            futures.add(future);
+            for (double mandelbrotReal = reMin, x = 0; x < width; mandelbrotReal += precision, ++x) {
+                //System.out.println("mandelbrotReal : " + mandelbrotReal);
+                ImageTask imageTask = new ImageTask(
+                        bufferedImage,
+                        imagePixelData,
+                        colors,
+                        convergenceSteps,
+                        width,
+                        height,
+                        imMin,
+                        mandelbrotReal,
+                        precision,
+                        x
+                );
 
-            //System.out.println((counter / (width * height)) * 100.0f + "%");
-        }
+                // List<Future<ImageTask>> futures = new ArrayList<>();
+                Future<BufferedImage> future = threadPool.submit(imageTask);
+                futures.add(future);
 
-        threadPool.shutdown();
+                //System.out.println((counter / (width * height)) * 100.0f + "%");
+            }
 
-        for(Future<BufferedImage> future : futures) {
-            BufferedImage result = future.get();
-            //System.out.println(result);
+            cache.put((float)precision, bufferedImage);
+
+            threadPool.shutdown();
+
+            for(Future<BufferedImage> future : futures) {
+                BufferedImage result = future.get();
+                //System.out.println(result);
+            }
         }
 
         return bufferedImage;
